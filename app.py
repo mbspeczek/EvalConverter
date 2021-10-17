@@ -20,7 +20,7 @@ class UniversalConverter:
     
     def convert_meters_to_km(self, _meters):
         if _meters > 0:
-            return _meters*1000
+            return _meters/1000
         else:
             return -1
 
@@ -37,7 +37,7 @@ class UniversalConverter:
             bytes_count+=1
             tmp_bits-=8
 
-        return str(bytes_count) + ("byte" if bytes_count==1 else " bytes") +" and "+str(tmp_bits)+ (" bit" if tmp_bits==1 else " bits.")
+        return str(bytes_count) + (" byte" if bytes_count==1 else " bytes") +" and "+str(tmp_bits)+ (" bit" if tmp_bits==1 else " bits")
 
     def add_converter(self, _converterTuple):
         if len(_converterTuple)==2:
@@ -59,7 +59,6 @@ class UniversalConverter:
     def multi_convert(self, a, form):
         formula = self.parserDict[form]
         x = a
-       
         return eval(formula)
     
 
