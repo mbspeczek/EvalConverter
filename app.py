@@ -74,11 +74,23 @@ class SimpleGeoFigCalc:
         return formulas 
 
     def add_new_formula(self, _newFormulaTuple):
-        self.geoFigFormulas.update(_newFormulaTuple)
+        if len(_newFormulaTuple)==2:
+            key = _newFormulaTuple[0]
+            value = _newFormulaTuple[1]
+            self.geoFigFormulas[key] = value
 
-    def solve(self, _values, _formula):
+    def solve( self, _formula, _variables, _values):
+        values = _values
+        variables = _variables
         current_formula = self.geoFigFormulas[_formula]
-        return current_formula
+        i=0
+        if len(values) == len(variables):
+            for variable in variables:
+                current_formula = current_formula.replace(variable,str(values[i]))
+                i+=1
+
+            
+            return eval(current_formula)
 
 if __name__ == "__main__":
     
@@ -89,11 +101,16 @@ if __name__ == "__main__":
     }
 
     formulas = {
-        "triangle":"a*h/2"
+        "triangle":"v1*v2/2",
+        "square":"v1*v2"
     }
     
+    
+
     c = UniversalConverter(dict)
     s = SimpleGeoFigCalc(formulas)
-    
+
+    s.add_new_formula( ("test","(v1*v2*v3)/3") )    
     print(s.return_formulas())
-    print(s.solve(1,"triangle"))
+    print(s.solve("square",["v1","v2"],[1,2]))
+    print(s.solve("test",["v1","v2","v3"],[3,3,3]))
