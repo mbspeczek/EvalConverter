@@ -1,3 +1,4 @@
+from types import resolve_bases
 import unittest
 from unittest import result
 from app import SimpleGeoFigCalc, UniversalConverter
@@ -12,6 +13,7 @@ class TestStringMethods(unittest.TestCase):
         test = a.convert_celcius_to_farenheit(10)
         # assert
         self.assertEqual(test,50)
+        self.assertEqual(a.convert_celcius_to_farenheit(-1000),None)
 
     def test_UniversalConverter_convert_celcius_to_kelvin(self):
         # arange
@@ -19,8 +21,12 @@ class TestStringMethods(unittest.TestCase):
         a = UniversalConverter(dict)
         # act 
         result = a.convert_celcius_to_kelvin(10)
+        result2 = a.convert_celcius_to_kelvin(-4000)
         # assert
         self.assertEqual(result,283.15)
+        self.assertEqual(result2,None)
+        self.assertTrue(a.convert_celcius_to_kelvin(-273)) # min value is -273.15
+        self.assertFalse(a.convert_celcius_to_kelvin(-274))
 
     def test_UniversalConverter_convert_meters_to_km(self):
         # arange
@@ -29,6 +35,8 @@ class TestStringMethods(unittest.TestCase):
         result = a.convert_meters_to_km(1000)
         # assert
         self.assertEqual(result, 1)
+        self.assertEqual(a.convert_meters_to_km(-3),-1)
+        self.assertEqual(a.convert_meters_to_km(0),0)
 
 
     def test_UniversalConverter_convert_squareMeters_to_squareFeet(self):
@@ -38,14 +46,18 @@ class TestStringMethods(unittest.TestCase):
         result = a.convert_squareMeters_to_squareFeet(10)
         # assert
         self.assertEqual(result, a.convert_squareMeters_to_squareFeet(10))
+        self.assertEqual(a.convert_squareMeters_to_squareFeet(-1),-1)
+        self.assertEqual(a.convert_squareMeters_to_squareFeet(0),0)
 
     def test_UniversalConverter_convert_bits_to_bytes(self):
         # arange
         a = UniversalConverter({"test":"a*a"})
         # act
-        result = a.convert_bits_to_bytes(12)
+        result = a.convert_bits_to_bytes(13)
         # assert
-        self.assertEqual(result, "1 byte and 4 bits")
+        self.assertEqual(result, "1 byte and 5 bits")
+        self.assertEqual(a.convert_bits_to_bytes(0),"No bytes")
+        self.assertEqual(a.convert_bits_to_bytes("dasd"), "No bytes")
 
     def test_UniversalConverter_return_converters(self):
         # arange
@@ -78,7 +90,7 @@ class TestStringMethods(unittest.TestCase):
         a.add_new_formula(("test","v1*v2")) # dict is sorted by keys
         result = a.return_formulas()
         # assert
-        self.assertEqual(result, ["test","square"])
+        self.assertEqual(result, ["square","test"])
 
     def test_SimpleGeoFigCalc_solve_triagnleArea(self):
         # arange

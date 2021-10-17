@@ -7,37 +7,40 @@ class UniversalConverter:
         self.parserDict = _parserDict
 
     def convert_celcius_to_farenheit(self, _celcius):
-        if _celcius > self.zeroAbsolute:
+        if _celcius >= self.zeroAbsolute:
             return ((_celcius*1.8)+32)
         else:
-            return "fail"
+            return None
 
     def convert_celcius_to_kelvin(self, _celcius):
-        if _celcius > self.zeroAbsolute:
+        if _celcius >= self.zeroAbsolute:
             return _celcius + 273.15
         else:
-            return "fail"
+            return None
     
     def convert_meters_to_km(self, _meters):
-        if _meters > 0:
+        if _meters >= 0:
             return _meters/1000
         else:
             return -1
 
     def convert_squareMeters_to_squareFeet(self, _squareMeters):
-        if _squareMeters >0:
+        if _squareMeters >=0:
             return _squareMeters*10.764
         else:
             return -1
 
     def convert_bits_to_bytes(self, bits):
-        bytes_count = 0
-        tmp_bits = bits
-        while tmp_bits >=8:
-            bytes_count+=1
-            tmp_bits-=8
+        if isinstance(bits,int) and bits >0:
+            bytes_count = 0
+            tmp_bits = bits
+            while tmp_bits >=8:
+                bytes_count+=1
+                tmp_bits-=8
 
-        return str(bytes_count) + (" byte" if bytes_count==1 else " bytes") +" and "+str(tmp_bits)+ (" bit" if tmp_bits==1 else " bits")
+            return str(bytes_count) + (" byte" if bytes_count==1 else " bytes") +" and "+str(tmp_bits)+ (" bit" if tmp_bits==1 else " bits")
+        else:
+            return "No bytes"
 
     def add_converter(self, _converterTuple):
         if len(_converterTuple)==2:
